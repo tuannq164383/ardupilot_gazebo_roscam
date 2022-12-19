@@ -3,7 +3,7 @@ SITL + ArduPilot + Gazebo + ROS Camera Plugin (Software In Loop Simulation Inter
 
 ## Description :
 
-Finally an all in one tutorial for setting up your virtual drone using Ardupilot (Arducopter) + SITL in an complete 3D virtual enviroment provided by Gazebo.
+Finally an all in one tutorial for setting up your virtual drone using Ardupilot (Arducopter) + SITL in a complete 3D virtual environment provided by Gazebo.
 
 At last but not least (Actually the most complicated to find examples of...) added the camera plugin from ROS to publish the images so you can take them outside Gazebo and do something with them...
 
@@ -12,7 +12,7 @@ Following are the requirements, setup steps and finally how to of each part..
 
 ## Requirements :
 * Ubuntu (20.04.5 LTS) Full 3D graphics hight recommended.
-* Gazebo version 8.x or greater (Recomended 11)
+* Gazebo version 8.x or greater (Recommended 11)
 * ROS noetic (Required to work with Gazebo)
 * MAVROS
 
@@ -42,7 +42,7 @@ gazebo --verbose
 
 ## ROS noetic installation :
 
-Install ROS with sudo apt install ros-noetic-desktop-full (follow instruction here http://wiki.ros.org/noetic/Installation/Ubuntu).
+Install ROS with sudo apt install ros-noetic-desktop-full (follow instructions here http://wiki.ros.org/noetic/Installation/Ubuntu).
 
 ### Configure your Ubuntu repositories
 ````
