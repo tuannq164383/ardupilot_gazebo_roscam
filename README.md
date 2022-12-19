@@ -324,7 +324,7 @@ roslaunch apm.launch
 
 
 ### Launch Gazebo
-Close all teminal first!.
+Close all teminal first
 
 Open one Terminal and launch ROS integrated Gazebo
 
@@ -336,7 +336,7 @@ source /opt/ros/noetic/setup.bash
 export GAZEBO_MODEL_PATH=~/ardupilot_gazebo/models:$GAZEBO_MODEL_PATH
 export GAZEBO_MODEL_PATH=~/ardupilot_gazebo_roscam/src/ardupilot_gazebo/models:$GAZEBO_MODEL_PATH
 export GAZEBO_PLUGIN_PATH=/usr/lib/x86_64-linux-gnu/gazebo-11/plugins:$GAZEBO_PLUGIN_PATH 
-export GAZEBO_PLUGIN_PATH=/opt/ros/netic/lib:$GAZEBO_PLUGIN_PATH
+export GAZEBO_PLUGIN_PATH=/opt/ros/noetic/lib:$GAZEBO_PLUGIN_PATH
 
 #Launch ROS integrated Gazebo
 
