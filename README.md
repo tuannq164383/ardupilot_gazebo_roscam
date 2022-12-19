@@ -11,12 +11,12 @@ Following are the requirements, setup steps and finally how to of each part..
 
 
 ## Requirements :
-* Ubuntu (18.04 LTS) Full 3D graphics hight recommended.
-* Gazebo version 8.x or greater (Recomended 9.6)
-* ROS melodic (Required to work with Gazebo)
+* Ubuntu (20.04.5 LTS) Full 3D graphics hight recommended.
+* Gazebo version 8.x or greater (Recomended 11)
+* ROS noetic (Required to work with Gazebo)
 * MAVROS
 
-## Gazebo 9 :
+## Gazebo 11 :
 
 ### Setup your computer to accept software from packages.osrfoundation.org.
 ````
@@ -31,8 +31,8 @@ wget http://packages.osrfoundation.org/gazebo.key -O - | sudo apt-key add -
 ### Install Gazebo
 ````
 sudo apt-get update
-sudo apt-get install gazebo9
-sudo apt-get install libgazebo9-dev
+sudo apt-get install gazebo11
+sudo apt-get install libgazebo11-dev
 ````
 
 ### Test Gazebo
@@ -40,31 +40,23 @@ sudo apt-get install libgazebo9-dev
 gazebo --verbose
 ````
 
-NOTE: When running in VM mode this might be required for gazebo to run
-````
-export SVGA_VGPU10=0
-````
+## ROS noetic installation :
 
-To make the change permanent use:
-````
-$ echo "export SVGA_VGPU10=0" >> ~/.profile
-````
-
-## ROS melodic installation :
-
-Install ROS with sudo apt install ros-melodic-desktop-full (follow instruction here http://wiki.ros.org/melodic/Installation/Ubuntu).
+Install ROS with sudo apt install ros-noetic-desktop-full (follow instruction here http://wiki.ros.org/noetic/Installation/Ubuntu).
 
 ### Configure your Ubuntu repositories
 ````
 sudo sh -c 'echo "deb http://packages.ros.org/ros/ubuntu $(lsb_release -sc) main" > /etc/apt/sources.list.d/ros-latest.list'
-sudo apt-key adv --keyserver hkp://ha.pool.sks-keyservers.net:80 --recv-key 421C365BD9FF1F717815A3895523BAEEB01FA116
+
+sudo apt install curl # if you haven't already installed curl
+curl -s https://raw.githubusercontent.com/ros/rosdistro/master/ros.asc | sudo apt-key add -
 
 sudo apt update
 ````
 
-### Install ROS melodic
+### Install ROS noetic
 ````
-sudo apt install ros-melodic-desktop-full
+sudo apt install ros-noetic-desktop-full
 ````
 
 ### Initialize ROS
@@ -75,13 +67,13 @@ rosdep update
 
 ### Environment setup
 ````
-echo "source /opt/ros/melodic/setup.bash" >> ~/.bashrc
+echo "source /opt/ros/noetic/setup.bash" >> ~/.bashrc
 source ~/.bashrc
 ````
 
 ### Dependencies for building packages
 ````
-sudo apt install python-rosinstall python-rosinstall-generator python-wstool build-essential
+sudo apt install python3-rosdep python3-rosinstall python3-rosinstall-generator python3-wstool build-essential
 ````
 
 ## MAVROS installation :
@@ -90,7 +82,7 @@ MAVLink extendable communication node for ROS with proxy for Ground Control Stat
 
 ### Configure your Ubuntu repositories
 ````
-sudo apt-get install ros-melodic-mavros ros-melodic-mavros-extras
+sudo apt-get install ros-noetic-mavros ros-noetic-mavros-extras
 
 cd ~/
 
@@ -103,12 +95,12 @@ chmod a+x install_geographiclib_datasets.sh
 
 ### For ease of use on a desktop computer, please also install RQT
 ````
-sudo apt-get install ros-melodic-rqt ros-melodic-rqt-common-plugins ros-melodic-rqt-robot-plugins
+sudo apt-get install ros-noetic-rqt ros-noetic-rqt-common-plugins ros-noetic-rqt-robot-plugins
 ````
 
 ### Install catkin tools
 ````
-sudo apt-get install python-catkin-tools
+sudo apt-get install python3-catkin-tools
 ````
 
 Now that we have everything correctly installed we can begin our system configuration
@@ -128,7 +120,7 @@ Instructions taken from ardupilot.org (See original instructions here http://ard
 
 ````
 cd ~/
-git clone https://github.com/r0ch1n/ardupilot
+git clone https://github.com/ArduPilot/ardupilot.git
 cd ardupilot
 git submodule update --init --recursive
 ````
@@ -160,6 +152,10 @@ cd ~/ardupilot/ArduCopter
 Then start the simulator using sim_vehicle.py. The first time you run it you should use the -w option to wipe the virtual EEPROM and load the right default parameters for your vehicle.
 
 ````
+sim_vehicle.py -w
+````
+
+````
 sim_vehicle.py --console --map
 ````
 
@@ -168,7 +164,7 @@ sim_vehicle.py --console --map
 New versions of MAVProxy and pymavlink are released quite regularly. If you are a regular SITL user you should update every now and again using this command
 
 ````
-sudo pip install --upgrade pymavlink MAVProxy
+sudo pip install --upgrade pymavlink MAVProxy --user
 ````
 
 
@@ -190,6 +186,10 @@ cd ardupilot_gazebo
 mkdir build
 
 cd build
+
+sudo apt install
+
+sudo apt-get install cmake
 
 cmake ..
 
@@ -246,7 +246,7 @@ This contains the ROS integrated custom models and .world files for Gazebo
 ````
 # Source ROS
 
-source /opt/ros/melodic/setup.bash
+source /opt/ros/n/setup.bash
 
 # Clone custom Gazebo ROS package
 
@@ -269,8 +269,8 @@ catkin build
 # Add Custom models and plugin to Gazebo
 export GAZEBO_MODEL_PATH=~/ardupilot_gazebo/models:$GAZEBO_MODEL_PATH
 export GAZEBO_MODEL_PATH=~/ardupilot_gazebo_roscam/src/ardupilot_gazebo/models:$GAZEBO_MODEL_PATH
-export GAZEBO_PLUGIN_PATH=/usr/lib/x86_64-linux-gnu/gazebo-9/plugins:$GAZEBO_PLUGIN_PATH 
-export GAZEBO_PLUGIN_PATH=/opt/ros/melodic/lib:$GAZEBO_PLUGIN_PATH
+export GAZEBO_PLUGIN_PATH=/usr/lib/x86_64-linux-gnu/gazebo-11/plugins:$GAZEBO_PLUGIN_PATH 
+export GAZEBO_PLUGIN_PATH=/opt/ros/noetic/lib:$GAZEBO_PLUGIN_PATH
 
 # Test installation
 
@@ -308,11 +308,12 @@ roscp mavros apm.launch apm.launch
 
 sudo gedit apm.launch
 
-To connect to SITL we just need to modify the first line to <arg name="fcu_url" default="udp://127.0.0.1:14551@14555" />. save you file and launch it with
+To connect to SITL we just need to modify line 5 to <arg name="fcu_url" default="udp://127.0.0.1:14551@14555" />. save you file and launch it with
 ````
 
 ### Test
 
+#Make sure the SITL software is running (sim_vehicle.py -v ArduCopter --console --map)
 ````
 cd ~/ardupilot_ws/src/launch
 
@@ -323,18 +324,19 @@ roslaunch apm.launch
 
 
 ### Launch Gazebo
+Close all teminal first!.
 
 Open one Terminal and launch ROS integrated Gazebo
 
 ````
 #Make sure you have all the right environment, if you are not sure run the following first
 
-source /opt/ros/melodic/setup.bash
+source /opt/ros/noetic/setup.bash
 
 export GAZEBO_MODEL_PATH=~/ardupilot_gazebo/models:$GAZEBO_MODEL_PATH
 export GAZEBO_MODEL_PATH=~/ardupilot_gazebo_roscam/src/ardupilot_gazebo/models:$GAZEBO_MODEL_PATH
-export GAZEBO_PLUGIN_PATH=/usr/lib/x86_64-linux-gnu/gazebo-9/plugins:$GAZEBO_PLUGIN_PATH 
-export GAZEBO_PLUGIN_PATH=/opt/ros/melodic/lib:$GAZEBO_PLUGIN_PATH
+export GAZEBO_PLUGIN_PATH=/usr/lib/x86_64-linux-gnu/gazebo-11/plugins:$GAZEBO_PLUGIN_PATH 
+export GAZEBO_PLUGIN_PATH=/opt/ros/netic/lib:$GAZEBO_PLUGIN_PATH
 
 #Launch ROS integrated Gazebo
 
