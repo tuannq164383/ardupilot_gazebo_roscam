@@ -246,7 +246,7 @@ This contains the ROS integrated custom models and .world files for Gazebo
 ````
 # Source ROS
 
-source /opt/ros/n/setup.bash
+source /opt/ros/noetic/setup.bash
 
 # Clone custom Gazebo ROS package
 
